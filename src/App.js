@@ -6,12 +6,12 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchSportsList = async () => {
-      console.log("Fetching available sports from SGO API...");
+    const fetchSoccerOdds = async () => {
+      console.log("Fetching SGO soccer odds...");
 
       try {
         const res = await fetch(
-          "https://api.sportsgameodds.com/v2/sports/",
+          "https://api.sportsgameodds.com/v2/odds?sportID=SOCCER",
           {
             headers: {
               "X-Api-Key": SPORTS_GAME_ODDS_API_KEY
@@ -19,24 +19,24 @@ function App() {
           }
         );
         const data = await res.json();
-        console.log("✅ Available Sports (SGO v2):", data);
+        console.log("✅ SGO SOCCER odds:", data);
       } catch (e) {
-        console.error("❌ Error fetching sports list:", e);
+        console.error("❌ Error fetching soccer odds:", e);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchSportsList();
+    fetchSoccerOdds();
   }, []);
 
   return (
     <div style={{ padding: 20, color: "white", backgroundColor: "black", minHeight: "100vh" }}>
-      <h1 style={{ fontSize: "24px", fontWeight: "bold" }}>SGO API – List Available Sports</h1>
+      <h1 style={{ fontSize: "24px", fontWeight: "bold" }}>SGO API – Soccer Odds</h1>
       {loading ? (
-        <p>Loading sports list...</p>
+        <p>Fetching soccer odds...</p>
       ) : (
-        <p>Done. Open browser console (F12) to view available sports with IDs.</p>
+        <p>Done. Check console (F12) for raw soccer odds data.</p>
       )}
     </div>
   );
