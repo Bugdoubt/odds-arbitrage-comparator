@@ -9,16 +9,27 @@ function App() {
 
   useEffect(() => {
     const fetchOdds = async () => {
+      console.log("ODDS API KEY:", ODDS_API_KEY);
+      console.log("SGO API KEY:", SPORTS_GAME_ODDS_API_KEY); // Debug line
+
       try {
+        // Fetch from The Odds API
         const res1 = await fetch(
           `https://api.the-odds-api.com/v4/sports/soccer_epl/odds/?regions=eu&markets=h2h&apiKey=${ODDS_API_KEY}`
         );
         const data1 = await res1.json();
 
+        // Fetch from Sports Game Odds
         const res2 = await fetch(
           `https://api.sportsgameodds.com/v1/odds?sport=soccer&period=match&market=h2h&region=eu&api_key=${SPORTS_GAME_ODDS_API_KEY}`
         );
         const data2 = await res2.json();
+
+        if (!Array.isArray(data1) || !Array.isArray(data2)) {
+          console.error("Invalid response format from one of the APIs");
+          setLoading(false);
+          return;
+        }
 
         const arbitrages = [];
 
