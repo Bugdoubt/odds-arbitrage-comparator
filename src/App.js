@@ -1,50 +1,42 @@
 import { useEffect, useState } from "react";
 
-const ODDS_API_KEY = process.env.REACT_APP_ODDS_API_KEY;
 const SPORTS_GAME_ODDS_API_KEY = process.env.REACT_APP_SPORTS_GAME_ODDS_API_KEY;
 
 function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchOdds = async () => {
-      console.log("Testing raw API responses...");
+    const fetchSportsList = async () => {
+      console.log("Fetching available sports from SGO API...");
 
       try {
-        const res1 = await fetch(
-          `https://api.the-odds-api.com/v4/sports/soccer_epl/odds/?regions=eu&markets=h2h&apiKey=${ODDS_API_KEY}`
-        );
-        const data1 = await res1.json();
-        console.log("✅ The Odds API (v4) response:", data1);
-
-        const res2 = await fetch(
-          "https://api.sportsgameodds.com/v2/odds?sport=soccer&period=match&market=h2h&region=eu",
+        const res = await fetch(
+          "https://api.sportsgameodds.com/v2/sports/",
           {
             headers: {
               "X-Api-Key": SPORTS_GAME_ODDS_API_KEY
             }
           }
         );
-        const data2 = await res2.json();
-        console.log("✅ Sports Game Odds API (v2) response:", data2);
-
+        const data = await res.json();
+        console.log("✅ Available Sports (SGO v2):", data);
       } catch (e) {
-        console.error("❌ Error during API testing:", e);
+        console.error("❌ Error fetching sports list:", e);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchOdds();
+    fetchSportsList();
   }, []);
 
   return (
     <div style={{ padding: 20, color: "white", backgroundColor: "black", minHeight: "100vh" }}>
-      <h1 style={{ fontSize: "24px", fontWeight: "bold" }}>Arbitrage Odds Finder – API Test</h1>
+      <h1 style={{ fontSize: "24px", fontWeight: "bold" }}>SGO API – List Available Sports</h1>
       {loading ? (
-        <p>Loading and testing APIs...</p>
+        <p>Loading sports list...</p>
       ) : (
-        <p>Done. Open your browser console (F12) to see the raw API responses.</p>
+        <p>Done. Open browser console (F12) to view available sports with IDs.</p>
       )}
     </div>
   );
