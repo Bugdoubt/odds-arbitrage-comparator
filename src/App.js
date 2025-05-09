@@ -19,9 +19,14 @@ function App() {
         );
         const data1 = await res1.json();
 
-        // Fetch from Sports Game Odds
+        // Fetch from Sports Game Odds using proper header
         const res2 = await fetch(
-          `https://api.sportsgameodds.com/v1/odds?sport=soccer&period=match&market=h2h&region=eu&api_key=${SPORTS_GAME_ODDS_API_KEY}`
+          "https://api.sportsgameodds.com/v1/odds?sport=soccer&period=match&market=h2h&region=eu",
+          {
+            headers: {
+              "X-Api-Key": SPORTS_GAME_ODDS_API_KEY
+            }
+          }
         );
         const data2 = await res2.json();
 
